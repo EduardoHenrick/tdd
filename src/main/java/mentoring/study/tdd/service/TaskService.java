@@ -19,7 +19,8 @@ public class TaskService {
     // Regra: seguir boas práticas do TDD
 
     public Task create(Task task) {
-        return null;
+        validate(task);
+        return repository.save(task);
     }
 
     public List<Task> findAll() {
@@ -30,7 +31,7 @@ public class TaskService {
         if (task == null) {
             throw new TaskValidationException("Task cannot be null");
         }
-        if (task.getTitle() == null || task.getTitle().isEmpty()) {
+        if (task.getTitle() == null || task.getTitle().trim().isEmpty()) {
             throw new TaskValidationException("Task title cannot be null or empty");
         }
     }
