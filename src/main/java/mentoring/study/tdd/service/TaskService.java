@@ -24,7 +24,7 @@ public class TaskService {
     }
 
     public List<Task> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     public void validate(Task task) {

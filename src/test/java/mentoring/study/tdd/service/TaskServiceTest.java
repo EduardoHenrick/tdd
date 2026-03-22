@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -85,4 +87,40 @@ class TaskServiceTest {
 
         verify(repository, never()).save(any());
     }
+
+    @Test
+    void deveRetornarTodasAsTarefasQuandoExistiremTarefas() {
+        Task task1 = new Task();
+        task1.setTitle("Tarefa 1");
+
+        Task task2 = new Task();
+        task2.setTitle("Tarefa 2");
+
+        List<Task> tasks = List.of(task1, task2);
+
+        when(repository.findAll()).thenReturn(tasks);
+
+        List<Task> result = service.findAll();
+        
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Tarefa 1", result.get(0).getTitle());
+        assertEquals("Tarefa 2", result.get(1).getTitle());
+
+        verify(repository, times(1)).findAll();
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoExistiremTarefas() {
+        when(repository.findAll()).thenReturn(List.of());
+
+        List<Task> result = service.findAll();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        verify(repository).findAll();
+    }
+
+
 }
